@@ -4,14 +4,19 @@
 <div class="container">
     <div class="row">
         <div class="col-3">
-            <img class=" w-100 p-5 rounded-circle" src="/svg/2.jpg" alt="">
+            <img class=" w-100 p-5 rounded-circle" src="/storage/{{ $user->profile->image }}" alt="">
         </div>
         <div class="col-9 pt-5">
             <div class=" d-flex justify-content-between align-items-baseline">
                 <h1>{{ $user->username }}</h1>
+                @can('update', $user->profile)
                 <a href="/post/create">Add New Post</a>
+                @endcan
             </div>
+            @can('update', $user->profile)
                 <a href="/profile/{{ $user->id }}/edit">Edit Profile</a>
+            @endcan
+                
             <div class="d-flex">
                 <div class="pe-5"><strong>{{ $user->posts->count() }}</strong>Posts</div>
                 <div class="pe-5"><strong>23k</strong>Followers</div>

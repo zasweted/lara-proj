@@ -25,5 +25,5 @@ Route::get('/profile/{user}/edit', [P::class, 'edit'])->name('profile.edit');
 Route::put('/profile/{user}', [P::class, 'update'])->name('profile.update');
 
 Route::get('/post/create', [PostsController::class, 'create']);
-Route::get('/post/{post}', [PostsController::class, 'show']);
 Route::post('/post/store', [PostsController::class, 'store'])->name('post.store');
+Route::get('/post/{post}', [PostsController::class, 'show']);
