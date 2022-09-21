@@ -13,6 +13,14 @@ class PostsController extends Controller
         $this->middleware('auth');
     }
 
+    public function index()
+    {
+        $users = auth()->user()->following()->pluck('profiles.user_id');
+        $posts = P::whereIn('user_id', $users)->orderBy('created_at', 'desc')->get(); //or use  latest()
+
+        return view('posts.index', compact('posts'));
+    }
+
     public function create()
     {
         return view('posts.create');
