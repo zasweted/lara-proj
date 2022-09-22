@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfilesController as P;
 use App\Http\Controllers\PostsController;
 use App\Http\Controllers\FollowController;
+use App\Mail\NewUserWelcomeMail;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -17,6 +18,10 @@ use App\Http\Controllers\FollowController;
 
 
 Auth::routes();
+
+Route::get('/email', function(){
+    return new NewUserWelcomeMail();
+});
 
 Route::post('follow/{user}', [FollowController::class, 'store']);
 

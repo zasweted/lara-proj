@@ -16,7 +16,7 @@ class PostsController extends Controller
     public function index()
     {
         $users = auth()->user()->following()->pluck('profiles.user_id');
-        $posts = P::whereIn('user_id', $users)->orderBy('created_at', 'desc')->get(); //or use  latest()
+        $posts = P::whereIn('user_id', $users)->with('user')->latest()->paginate(5); //or use  latest()
 
         return view('posts.index', compact('posts'));
     }

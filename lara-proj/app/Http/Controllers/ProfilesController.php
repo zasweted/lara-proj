@@ -3,18 +3,32 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use App\Models\User;
 use Image;
 
 
 class ProfilesController extends Controller
 {
-    public function index(\App\Models\User $user)
+    public function appBlade(User $user)
+    {
+        return view('layouts.app', compact('user'));
+    }
+
+    public function index(User $user)
     {
         $follows = (auth()->user()) ? auth()->user()->following->contains($user->id) : false;
         
-
-        return view('profiles.index', compact('user', 'follows'));
+        $postCount = Cache::remember('count.posts.' . $user->id, now()->addSeconds(30), function() use ($user){
+            return $user->posts->count();
+        });
+        $followerCount = Cache::remember('count.followers.' . $user->id, now()->addSeconds(30), function() use ($user) {
+            return $user->profile->followers->count();
+        });
+        $followingCount = Cache::remember('count.followings.' . $user->id, now()->addSeconds(30), function() use ($user) {
+            return $user->following->count();
+        });
+        return view('profiles.index', compact('user', 'follows', 'postCount', 'followerCount', 'followingCount'));
     }
 
     public function edit(\App\Models\User $user)
